@@ -1,4 +1,4 @@
-// Filename - Edit.js
+
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,93 +7,146 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Edit() {
-    // Here usestate has been used in order
-    // to set and get values from the jsx
-    const [name, setname] = useState("");
-    const [age, setage] = useState("");
-    const [id, setid] = useState("");
+    
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
+    console.log(age);
+    const [email, setEmail] = useState("");
+    const [cnumber, setcnumber] = useState("");
+    const [filee, setfilee] = useState("");
+    const [fileeData, setfileeData] = useState([]);
+    const [id, setId] = useState("");
 
-    // Used for navigation with logic in javascript
     let history = useNavigate();
 
-    // Getting an index of an entry with an id
     let index = array
         .map(function (e) {
             return e.id;
         })
         .indexOf(id);
-
-    // Function for handling the edit and
-    // pushing changes of editing/updating
+       
     const handelSubmit = (e) => {
-        // Preventing from reload
         e.preventDefault();
-        if (name == "" || age == "") {
+        if (name == "" || age == "" || email == "" || cnumber == "" || filee == "" || fileeData == "") {
             alert("invalid input");
             return;
         }
 
-        // Getting an index of an array
         let a = array[index];
-
-        // Putting the value from the input
-        // textfield and replacing it from
-        // existing for updation
+        console.log(a);
+        
         a.Name = name;
         a.Age = age;
-      
-
-        // Redirecting to main page
+        a.Email = email;
+        a.Cnumber = cnumber;
+        a.Filee = filee;
+        a.FileeData = fileeData;
+    
         history("/");
     };
 
-    // Useeffect take care that page will
-    // be rendered only once
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        console.log("hi");
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setfileeData(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+            setfilee(file.name);
+        }
+    };
+   
     useEffect(() => {
-        setname(localStorage.getItem("Name"));
-        setage(localStorage.getItem("Age"));
-        setid(localStorage.getItem("id"));
+        setName(localStorage.getItem("Name"));
+        setAge(localStorage.getItem("Age"));
+        setEmail(localStorage.getItem("Email"));
+        setcnumber(localStorage.getItem("Cnumber"));
+        setfilee(localStorage.getItem("Filee"));
+        setfileeData(localStorage.getItem("FileeData"));
+        setId(localStorage.getItem("id"));
     }, []);
+  
 
     return (
         <div>
+            <h1 className="wiser">Update</h1>
             <Form
                 className="d-grid gap-2"
                 style={{ margin: "5rem" }}
             >
-                {/* setting a name from the 
-                    input textfiled */}
+               
                 <Form.Group
                     className="mb-3"
-                    controlId="formBasicEmail"
+                    controlId="formBasicName"
                 >
                     <Form.Control
                         value={name}
                         onChange={(e) =>
-                            setname(e.target.value)
+                            setName(e.target.value)
                         }
                         type="text"
                         placeholder="Enter Name"
                     />
                 </Form.Group>
 
-                {/* setting a age from the input textfiled */}
                 <Form.Group
                     className="mb-3"
-                    controlId="formBasicPassword"
+                    controlId="formBasicAge"
                 >
                     <Form.Control
                         value={age}
                         onChange={(e) =>
-                            setage(e.target.value)
+                            setAge(e.target.value)
                         }
                         type="number"
                         placeholder="Age"
                     />
                 </Form.Group>
 
-                {/* Hadinling an onclick event 
-                    running an edit logic */}
+                <Form.Group
+                    className="mb-3"
+                    controlId="formBasicEmail"
+                >
+                    
+                    <Form.Control
+                        value={email}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                        type="email"
+                        placeholder="Email"
+                        
+                    />
+                </Form.Group>
+                <Form.Group
+                    className="mb-3"
+                    controlId="formBasicCnumber"
+                >
+                    <Form.Control
+                        value={cnumber}
+                        onChange={(e) =>
+                            setcnumber(e.target.value)
+                        }
+                        type="number"
+                        placeholder="Mobile Number"
+                    />
+                </Form.Group>
+                <Form.Group
+                    className="mb-3"
+                    controlId="formBasicFileeData"
+                >
+                    <Form.Control
+                        // value={fileeData}
+                        onChange={handleFileChange}
+                        type="file"
+                        placeholder="Upload File"
+                    />
+                    <img className="mt-4" height="100" src={fileeData}/>
+                </Form.Group>
+
                 <Button
                     onClick={(e) => handelSubmit(e)}
                     variant="primary"
@@ -103,7 +156,7 @@ function Edit() {
                     Update
                 </Button>
 
-                {/* Redirecting to main page after editing */}
+                
                 <Link className="d-grid gap-2" to="/">
                     <Button variant="warning" size="lg">
                         Home

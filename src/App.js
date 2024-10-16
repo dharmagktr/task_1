@@ -14,18 +14,9 @@ import Home from "./components/Home";
 function App() {
     return (
         <div className="App">
-            <h1 className="wiser">Wiser Web Tutor</h1>
             <Router>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route
-                        path="/create"
-                        element={<Create />}
-                    />
-                    <Route
-                        path="/edit"
-                        element={<Edit />}
-                    />
                 </Routes>
             </Router>
         </div>
